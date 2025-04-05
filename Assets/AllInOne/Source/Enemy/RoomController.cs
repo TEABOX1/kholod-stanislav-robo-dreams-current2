@@ -8,32 +8,41 @@ namespace AllInOne
 {
     public class RoomController : MonoBehaviour, INavPointProvider
     {
-        [SerializeField] private Vector3 _roomExtends;
-        [SerializeField] private Vector3 _roomOffset;
-        [SerializeField] private EnemyController _enemyController;
-        [SerializeField] private int _maxEnemies;
-        [SerializeField] private float _spawnDelay;
+        public event Action OnEnemyDeath;
 
-        private List<EnemyController> _enemies;
-        
-        private readonly Vector3[] _gizmosPoints = new Vector3[4];
+        [SerializeField] private Transform _spawnPoint;
+        [SerializeField] private float _spawnRadius;
+        [SerializeField] private Vector2Int _spawnCount;
+        [SerializeField] private EnemyController _enemyController;
+        [SerializeField] private Vector3 _offset;
+        [SerializeField] private Vector2 _periodBounds;
+
+        private List<EnemyController> _enemies = new();
 
         private Vector3 _point;
         private NavMeshHit _hit;
 
         private IHealthService _healthService;
         private ICameraService _cameraSystem;
-        
+
         private float _time;
-        
-        private void Start()
+        private float _spawnDelay;
+
+        public int EnemyCount => _enemies.Count;
+
+        private void Awake()
+        {
+            enabled = false;
+        }
+
+        private void OnEnable()
         {
             _healthService = ServiceLocator.Instance.GetService<IHealthService>();
             _cameraSystem = ServiceLocator.Instance.GetService<ICameraService>();
-            _enemies = new List<EnemyController>(_maxEnemies);
-            
+
             _time = 0f;
-            SpawnEnemies(_maxEnemies);
+            SpawnEnemies(Random.Range(_spawnCount.x, _spawnCount.y));
+            _spawnDelay = Random.Range(_periodBounds.x, _periodBounds.y);
         }
 
         private void Update()
@@ -45,7 +54,8 @@ namespace AllInOne
             }
 
             _time = 0f;
-            SpawnEnemies(_maxEnemies - _enemies.Count);
+            SpawnEnemies(Random.Range(_spawnCount.x, _spawnCount.y));
+            _spawnDelay = Random.Range(_periodBounds.x, _periodBounds.y);
         }
 
         private void SpawnEnemies(int count)
@@ -53,16 +63,15 @@ namespace AllInOne
             for (int i = 0; i < count; ++i)
                 SpawnEnemy();
         }
-        
+
         [ContextMenu("GetPoint")]
         private void GetPointInternal()
         {
-            Vector3 center = transform.position + _roomOffset;
-            Vector3 min = center - _roomExtends;
-            Vector3 max = center + _roomExtends;
-            _point.x = Random.Range(min.x, max.x);
-            _point.y = Random.Range(min.y, max.y);
-            _point.z = Random.Range(min.z, max.z);
+            Vector3 center = transform.position + _offset;
+            Vector2 randomInCircle = Random.insideUnitCircle * _spawnRadius;
+            _point.x = randomInCircle.x + center.x;
+            _point.y = center.y;
+            _point.z = randomInCircle.y + center.z;
             NavMesh.SamplePosition(_point, out _hit, 1.0f, NavMesh.AllAreas);
         }
 
@@ -71,61 +80,58 @@ namespace AllInOne
             GetPointInternal();
             return _hit.position;
         }
-        
+
         [ContextMenu("Spawn Enemy")]
         private void SpawnEnemy()
         {
             GetPointInternal();
-
+            int depth = 0;
             while (!_hit.hit)
             {
                 GetPointInternal();
+                depth++;
+                if (depth > 100000)
+                {
+                    Debug.LogError("Point sampling reached 100000 iterations, aborting");
+                    return;
+                }
             }
-            
-            EnemyController enemy = Instantiate(_enemyController, _hit.position, Quaternion.identity);
+
+            EnemyController enemy = EnemyPool.Instance.Get();
+            enemy.NavMeshAgent.Warp(_hit.position);// = _hit.position;
+            enemy.transform.rotation = Quaternion.identity;
+
             enemy.Initialize(this, _cameraSystem.Camera);
-            
             _healthService.AddCharacter(enemy.Health);
             enemy.Health.OnDeath += () => EnemyDeathHandler(enemy);
-            
+
             _enemies.Add(enemy);
+
+            //EnemyController enemy = Instantiate(_enemyController, _hit.position, Quaternion.identity);
+            //enemy.Initialize(this, _cameraSystem.Camera);
+
+            //_healthService.AddCharacter(enemy.Health);
+            //enemy.Health.OnDeath += () => EnemyDeathHandler(enemy);
+
+            //_enemies.Add(enemy);
         }
-        
+
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.blue;
-            Vector3 center = transform.position + _roomOffset;
-            
-            Vector3 position = center;
-            position.x += _roomExtends.x;
-            position.z += _roomExtends.z;
-            _gizmosPoints[0] = position;
-            
-            position = center;
-            position.x += _roomExtends.x;
-            position.z -= _roomExtends.z;
-            _gizmosPoints[1] = position;
-            
-            position = center;
-            position.x -= _roomExtends.x;
-            position.z -= _roomExtends.z;
-            _gizmosPoints[2] = position;
-            
-            position = center;
-            position.x -= _roomExtends.x;
-            position.z += _roomExtends.z;
-            _gizmosPoints[3] = position;
-            
-            Gizmos.DrawLineStrip(_gizmosPoints, true);
-            
+            Vector3 center = transform.position + _offset;
+
+            Gizmos.DrawWireSphere(center, _spawnRadius);
+
             Gizmos.color = _hit.hit ? Color.blue : Color.red;
-            
+
             Gizmos.DrawSphere(_hit.hit ? _hit.position : _point, 0.33f);
         }
 
         private void EnemyDeathHandler(EnemyController enemy)
         {
             _enemies.Remove(enemy);
+            OnEnemyDeath?.Invoke();
         }
     }
 }

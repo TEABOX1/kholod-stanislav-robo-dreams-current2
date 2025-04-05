@@ -74,7 +74,7 @@ namespace AllInOne
             _behaviourMachine.AddState((byte)EnemyBehaviour.Idle,
                 new IdleBehaviour(_behaviourMachine, (byte)EnemyBehaviour.Idle, this));
             _behaviourMachine.AddState((byte)EnemyBehaviour.Patrol,
-                new PatrolBehaviour(_behaviourMachine, (byte)EnemyBehaviour.Patrol, this));
+                new StormBehavior(_behaviourMachine, (byte)EnemyBehaviour.Patrol, this));
             _behaviourMachine.AddState((byte)EnemyBehaviour.Search,
                 new SearchBehaviour(_behaviourMachine, (byte)EnemyBehaviour.Search, this));
 

@@ -6,7 +6,7 @@ namespace AllInOne
 {
     public class HitScanGun : MonoBehaviour
     {
-        public event Action<Collider> OnHit;
+        public event Action<Collider, float> OnHit;
         public event Action OnShot;
         
         [SerializeField] protected GunAimer _aimer;
@@ -23,10 +23,20 @@ namespace AllInOne
         protected int _tilingId;
 
         protected InputController _inputController;
-        
+
+        private float _time;
+        private bool _isShootPrepearing = false;
+
         protected virtual void Start()
         {
             _tilingId = Shader.PropertyToID(_tilingName);
+            _time = 1f;
+        }
+
+        protected virtual void Update()
+        {
+            if (_isShootPrepearing)
+                _time += Time.deltaTime * 2;
         }
 
         protected void OnEnable()
@@ -41,8 +51,11 @@ namespace AllInOne
             _inputController.OnPrimaryInput -= PrimaryInputHandler;
         }
 
-        protected virtual void PrimaryInputHandler()
+        protected virtual void PrimaryInputHandler(bool isHold)
         {
+            _isShootPrepearing = isHold;
+            if (isHold)
+                return;
             Vector3 muzzlePosition = _muzzleTransform.position;
             Vector3 muzzleForward = _muzzleTransform.forward;
             Ray ray = new Ray(muzzlePosition, muzzleForward);
@@ -53,7 +66,7 @@ namespace AllInOne
                 Vector3 rayVector = Vector3.Project(directVector, ray.direction);
                 hitPoint = muzzlePosition + rayVector;
                 
-                OnHit?.Invoke(hitInfo.collider);
+                OnHit?.Invoke(hitInfo.collider, _time);
             }
 
             HitscanShotAspect shot = Instantiate(_shotPrefab, hitPoint, _muzzleTransform.rotation);
@@ -62,11 +75,19 @@ namespace AllInOne
             StartCoroutine(ShotRoutine(shot));
             
             OnShot?.Invoke();
+
+            _time = 1f;
         }
 
         protected IEnumerator ShotRoutine(HitscanShotAspect shot)
         {
             float interval = _decaySpeed * Time.deltaTime;
+
+            Vector3 scale = shot.transform.localScale;
+            scale.x *= _time;
+            scale.y *= _time;
+
+            shot.transform.localScale = scale;
             while (shot.distance >= interval)
             {
                 EvaluateShot(shot);

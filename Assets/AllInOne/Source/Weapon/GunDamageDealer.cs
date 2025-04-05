@@ -20,10 +20,10 @@ namespace AllInOne
             _gun.OnHit += GunHitHandler;
         }
 
-        private void GunHitHandler(Collider collider)
+        private void GunHitHandler(Collider collider, float damageMultiplier)
         {
             if (_healthSystem.GetHealth(collider, out Health health))
-                health.TakeDamage(_data.Damage);
+                health.TakeDamage(_data.Damage * (int)damageMultiplier);
             OnHit?.Invoke(health ? 1 : 0);
         }
     }

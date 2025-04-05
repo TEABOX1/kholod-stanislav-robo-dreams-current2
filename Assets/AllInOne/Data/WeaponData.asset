@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63778beff4af6ef4392357db8ad41b6b, type: 3}
   m_Name: WeaponData
   m_EditorClassIdentifier: 
-  _damage: 35
+  _damage: 10
   _cooldownTime: 0.33
   _maxCharge: 12
   _chargePerShot: 1

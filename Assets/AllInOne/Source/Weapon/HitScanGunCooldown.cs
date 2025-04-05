@@ -41,11 +41,18 @@ namespace AllInOne
             base.Start();
         }
 
-        protected override void PrimaryInputHandler()
+        protected override void Update()
+        {
+            base.Update();
+        }
+
+        protected override void PrimaryInputHandler(bool isHold)
         {
             if (_cooldown.IsOnCooldown || _reload.IsOnCooldown)
                 return;
-            base.PrimaryInputHandler();
+            base.PrimaryInputHandler(isHold);
+            if (isHold)
+                return;
             StartCoroutine(_cooldown.Begin());
             _currentCharge -= _data.ChargePerShot;
             if (_currentCharge <= 0)

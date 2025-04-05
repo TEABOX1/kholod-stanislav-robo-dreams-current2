@@ -8,7 +8,7 @@ namespace AllInOne
     {
         public event Action<Vector2> OnMoveInput;
         public event Action<Vector2> OnLookInput;
-        public event Action OnPrimaryInput;
+        public event Action<bool> OnPrimaryInput;
         public event Action<bool> OnSecondaryInput;
         public event Action OnGrenadeInput;
         public event Action<bool> OnScoreInput;
@@ -99,6 +99,7 @@ namespace AllInOne
             _lookAroundAction.canceled += LookPerformedHandler;
 
             _primaryFireAction.performed += PrimaryFirePerformedHandler;
+            _primaryFireAction.canceled += PrimaryFireCanceledHandler;
 
             _secondaryFireAction.performed += SecondaryFirePerformedHandler;
             _secondaryFireAction.canceled += SecondaryFireCanceledHandler;
@@ -196,7 +197,12 @@ namespace AllInOne
 
         private void PrimaryFirePerformedHandler(InputAction.CallbackContext context)
         {
-            OnPrimaryInput?.Invoke();
+            OnPrimaryInput?.Invoke(true);
+        }
+
+        private void PrimaryFireCanceledHandler(InputAction.CallbackContext context)
+        {
+            OnPrimaryInput?.Invoke(false);
         }
 
         private void SecondaryFirePerformedHandler(InputAction.CallbackContext context)
