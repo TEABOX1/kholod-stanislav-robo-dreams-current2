@@ -26,6 +26,7 @@ namespace AllInOne
         private bool _hasTarget;
         private bool _seesTarget;
         private bool _inMeeleRange = false;
+        private bool _inMiddleRange = false;
         private Vector3 _lastTargetPosition;
 
         private State _currentState;
@@ -47,6 +48,7 @@ namespace AllInOne
         public bool HasTarget => _hasTarget;
         public bool SeesTarget => _seesTarget;
         public bool InMeeleRange => _inMeeleRange;
+        public bool InMiddleRange => _inMiddleRange;
         public Vector3 LastTargetPosition => _lastTargetPosition;
 
         private void Start()
@@ -164,14 +166,19 @@ namespace AllInOne
             return true;
         }
 
-        private void SetAttackType(TargetableBase targetable, bool useFov = true)
+        private float GetAttackRange(TargetableBase targetable, bool useFov = true)
         {
             Vector3 position = _transform.position;
             Vector3 playerPosition = targetable.TargetPivot.position;
 
             Vector3 playerDirection = Vector3.ProjectOnPlane(playerPosition - position, Vector3.up);
 
-            if (playerDirection.sqrMagnitude <= _meeleRange * _meeleRange)
+            return playerDirection.sqrMagnitude;
+        }
+
+        private void SetAttackType(TargetableBase targetable, bool useFov = true)
+        {
+            if (GetAttackRange(targetable) <= _meeleRange * _meeleRange)
                 _inMeeleRange = true;
             else
                 _inMeeleRange = false;

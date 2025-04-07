@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27008e2a6d6de6b40b9429dc75b347d5, type: 3}
+  m_Name: TradeTable
+  m_EditorClassIdentifier: 
+  buyList:
+  - paymentId: Money
+    paymentAmount: 100
+    productId: Weapon
+    productAmount: 1
+  - paymentId: Money
+    paymentAmount: 1000
+    productId: Gold
+    productAmount: 1
+  sellList:
+  - paymentId: Money
+    paymentAmount: 100
+    productId: Weapon
+    productAmount: 1
+  - paymentId: Money
+    paymentAmount: 500
+    productId: Gold
+    productAmount: 1

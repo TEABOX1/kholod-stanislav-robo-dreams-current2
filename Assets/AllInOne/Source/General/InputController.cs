@@ -259,5 +259,15 @@ namespace AllInOne
         {
             OnInventory?.Invoke();
         }
+
+        public void Lock()
+        {
+            _actionMap.Disable();
+        }
+
+        public void Unlock()
+        {
+            _actionMap.Enable();
+        }
     }
 }

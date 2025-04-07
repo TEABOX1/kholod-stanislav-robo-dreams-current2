@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace AllInOne
 {
@@ -13,6 +14,7 @@ namespace AllInOne
         }
 
         private readonly Transform _characterTransform;
+        private readonly NavMeshAgent _agent;
 
         private State _state;
         private float _time;
@@ -29,7 +31,7 @@ namespace AllInOne
             _state = State.Resting;
 
             conditions = new List<IStateCondition>
-                { new BaseCondition((byte)EnemyBehaviour.Shoot, RangeChanged) };
+                { new BaseCondition((byte)EnemyBehaviour.Search, RangeChanged) };
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -101,10 +103,11 @@ namespace AllInOne
 
             float distance = Vector3.Distance(enemyController.Playerdar.CurrentTarget.TargetPivot.position, _characterTransform.position);
 
-            if (distance > 3 || distance < 3)
+            if (distance > 10 || distance < 3)
             {
                 _characterTransform.position = Vector3.Lerp(_characterTransform.position,
-                                              enemyController.Playerdar.CurrentTarget.TargetPivot.position - direction * 2f, Time.deltaTime * enemyController.Data.ChaseSpeed);
+                                              enemyController.Playerdar.CurrentTarget.TargetPivot.position - direction * 2f,
+                                              Time.deltaTime * enemyController.Data.ChaseSpeed);
             }
             _characterTransform.rotation = Quaternion.LookRotation(direction);
         }
@@ -116,7 +119,7 @@ namespace AllInOne
 
             Vector3 playerDirection = Vector3.ProjectOnPlane(playerPosition - position, Vector3.up);
 
-            return playerDirection.sqrMagnitude > 3 * 3;
+            return playerDirection.sqrMagnitude > 5 * 5;
         }
 
         public override void Dispose()

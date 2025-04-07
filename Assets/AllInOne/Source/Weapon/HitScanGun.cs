@@ -27,15 +27,17 @@ namespace AllInOne
         private float _time;
         private bool _isShootPrepearing = false;
 
+        public float HoldTime => _time;
+
         protected virtual void Start()
         {
             _tilingId = Shader.PropertyToID(_tilingName);
             _time = 1f;
         }
 
-        protected virtual void Update()
+        protected virtual void FixedUpdate()
         {
-            if (_isShootPrepearing)
+            if (_isShootPrepearing && _time <= 5)
                 _time += Time.deltaTime * 2;
         }
 
@@ -75,7 +77,6 @@ namespace AllInOne
             StartCoroutine(ShotRoutine(shot));
             
             OnShot?.Invoke();
-
             _time = 1f;
         }
 

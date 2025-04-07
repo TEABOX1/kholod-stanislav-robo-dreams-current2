@@ -375,7 +375,7 @@ Transform:
   m_GameObject: {fileID: 1317328200424290497}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.625, y: 0, z: -0.002}
+  m_LocalPosition: {x: 0.611, y: 0, z: 0.002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -425,14 +425,14 @@ SpriteRenderer:
   m_Sprite: {fileID: 21300000, guid: f290f707e5bc925498e60386582c36fc, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 1
-  m_Size: {x: 0.34, y: 0.22}
+  m_Size: {x: -0.34, y: 0.22}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 1
+  m_SpriteSortPoint: 0
 --- !u!114 &962126994819600546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1705,7 +1705,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyController: {fileID: 1939024820305290567}
   _range: 30
-  _meeleRange: 3
+  _meeleRange: 5
   _angle: 60
 --- !u!1 &4933575853655628582
 GameObject:
@@ -1950,7 +1950,7 @@ SpriteRenderer:
   m_Sprite: {fileID: 21300000, guid: f290f707e5bc925498e60386582c36fc, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 1
   m_Size: {x: 1.25, y: 0.24}
   m_AdaptiveModeThreshold: 0.5
@@ -2081,7 +2081,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6931756663013749919}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2500,7 +2500,7 @@ Transform:
   m_GameObject: {fileID: 8279285072581333855}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.625, y: 0, z: -0.001}
+  m_LocalPosition: {x: 0.611, y: 0, z: 0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2550,9 +2550,9 @@ SpriteRenderer:
   m_Sprite: {fileID: 21300000, guid: f290f707e5bc925498e60386582c36fc, type: 3}
   m_Color: {r: 1, g: 0.8106912, b: 0.08962262, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 1
-  m_Size: {x: 0.75, y: 0.22}
+  m_Size: {x: -0.75, y: 0.22}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

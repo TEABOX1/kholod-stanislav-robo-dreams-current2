@@ -9,7 +9,8 @@ namespace AllInOne
         private readonly NavMeshAgent _agent;
         private readonly CharacterController _characterController;
         private readonly Transform _characterTransform;
-        
+
+        bool Arrived = false;
         public SearchBehaviour(StateMachine stateMachine, byte stateId, EnemyController enemyController) : base(stateMachine, stateId, enemyController)
         {
             _agent = enemyController.NavMeshAgent;
@@ -25,7 +26,7 @@ namespace AllInOne
             enemyController.NavMeshAgent.SetDestination(enemyController.Playerdar.LastTargetPosition);
 
             conditions = new List<IStateCondition>
-                { new BaseCondition((byte)EnemyBehaviour.Deciding, ArrivedCondition) };
+                { new BaseCondition((byte)EnemyBehaviour.Patrol, ArrivedCondition) };
         }
 
         protected override void OnUpdate(float deltaTime)

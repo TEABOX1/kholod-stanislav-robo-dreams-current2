@@ -45,8 +45,8 @@ namespace AllInOne
             else
                 _displayedDamage = _displayedHealth;
 
-            _healthValue.size = new Vector2(_referenceSize.x * _displayedHealth, _referenceSize.y);
-            _damageValue.size = new Vector2(_referenceSize.x * _displayedDamage, _referenceSize.y);
+            _healthValue.size = -1 * (new Vector2(_referenceSize.x * _displayedHealth, _referenceSize.y));
+            _damageValue.size = -1 * (new Vector2(_referenceSize.x * _displayedDamage, _referenceSize.y));
         }
 
         private void HealthChangedHandler(float health) => SetHealth(health);

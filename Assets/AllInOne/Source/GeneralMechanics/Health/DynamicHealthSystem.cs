@@ -19,7 +19,10 @@ namespace AllInOne
 
         public void AddCharacter(IHealth character)
         {
-            _characters.Add(character.CharacterController, character);
+            if (_characters.ContainsKey(character.CharacterController))
+                _characters[character.CharacterController] = character;
+            else
+                _characters.Add(character.CharacterController, character);
             // Important, Liskov principle broken here
             character.OnDeath += () => CharacterDeathHandler((Health)character);
         }

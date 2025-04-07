@@ -38,7 +38,7 @@ namespace AllInOne
             
             EvaluateFall(1f);
 
-            Object.Destroy(enemyController.RootObject);
+            EnemyPool.Instance.ReturnToPool(enemyController);
         }
 
         public override void Dispose()

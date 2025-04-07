@@ -17,7 +17,7 @@ namespace AllInOne
 
         private void LateUpdate()
         {
-            Vector3 direction = -1*(_camera.transform.position - _transform.position).normalized;
+            Vector3 direction = (_camera.transform.position - _transform.position).normalized;
             _transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
     }

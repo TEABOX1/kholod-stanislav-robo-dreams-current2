@@ -34,8 +34,8 @@ namespace AllInOne
             _time = 0f;
             _state = State.Aiming;
 
-            conditions = new List<IStateCondition>
-                { new BaseCondition((byte)EnemyBehaviour.Attack, RangeChanged) };
+            //conditions = new List<IStateCondition>
+            //    { new BaseCondition((byte)EnemyBehaviour.Deciding, RangeChanged) };
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -161,7 +161,7 @@ namespace AllInOne
             
             Vector3 playerDirection = Vector3.ProjectOnPlane(playerPosition - position, Vector3.up);
 
-            return playerDirection.sqrMagnitude <= 3 * 3;
+            return playerDirection.sqrMagnitude <= 5 * 5;
         }
 
         public override void Dispose()

@@ -78,8 +78,6 @@ namespace AllInOne
             _behaviourMachine.AddState((byte)EnemyBehaviour.Search,
                 new SearchBehaviour(_behaviourMachine, (byte)EnemyBehaviour.Search, this));
 
-            /*_behaviourMachine.AddState((byte)EnemyBehaviour.Attack,
-                new AttackBehaviour(_behaviourMachine, (byte)EnemyBehaviour.Attack, this));*/
             _behaviourMachine.AddState((byte)EnemyBehaviour.Shoot,
                 new ShootBehaviour(_behaviourMachine, (byte)EnemyBehaviour.Shoot, this));
             _behaviourMachine.AddState((byte)EnemyBehaviour.Attack,
@@ -101,10 +99,9 @@ namespace AllInOne
 
             BehaviourBranch checkRange = new BehaviourBranch(meeleAttackLeaf, rangedAttackLeaf, CheckRangeCondition);
 
-
             BehaviourLeaf searchLeaf = new BehaviourLeaf((byte)EnemyBehaviour.Search);
 
-            BehaviourBranch seesTarget = new BehaviourBranch(checkRange, searchLeaf, SeesTargetCondition);
+            BehaviourBranch seesTarget = new BehaviourBranch(meeleAttackLeaf, searchLeaf, SeesTargetCondition);
 
             BehaviourBranch hasTarget = new BehaviourBranch(seesTarget, patrolBranch, HasTargetCondition);
             
