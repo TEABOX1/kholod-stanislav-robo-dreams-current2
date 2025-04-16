@@ -1706,7 +1706,14 @@ MonoBehaviour:
   _enemyController: {fileID: 1939024820305290567}
   _range: 30
   _meeleRange: 5
+  _middleRange: 10
   _angle: 60
+  _targetMask:
+    serializedVersion: 2
+    m_Bits: 19
+  _obstacleMask:
+    serializedVersion: 2
+    m_Bits: 19
 --- !u!1 &4933575853655628582
 GameObject:
   m_ObjectHideFlags: 0

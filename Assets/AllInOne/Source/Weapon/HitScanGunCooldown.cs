@@ -20,6 +20,8 @@ namespace AllInOne
         private Cooldown _reload;
 
         private int _currentCharge;
+        private bool _canShoot = true;
+        private bool _isPrimaryHeld;
 
         public int MaxCharge => _data.MaxCharge;
         public int CurrentCharge => _currentCharge;
@@ -48,11 +50,25 @@ namespace AllInOne
 
         protected override void PrimaryInputHandler(bool isHold)
         {
-            if (_cooldown.IsOnCooldown || _reload.IsOnCooldown)
+            _isPrimaryHeld = isHold;
+
+            if (_reload.IsOnCooldown)
+            {
+                if (!isHold)
+                    _canShoot = true;
+                return;
+            }
+
+            if (!_canShoot)
+            {
+                if (!isHold)
+                    _canShoot = true;
+                return;
+            }
+
+            if (_cooldown.IsOnCooldown || isHold)
                 return;
             base.PrimaryInputHandler(isHold);
-            if (isHold)
-                return;
             StartCoroutine(_cooldown.Begin());
             _currentCharge -= _data.ChargePerShot;
             if (_currentCharge <= 0)
@@ -65,6 +81,7 @@ namespace AllInOne
 
         private IEnumerator ReloadRoutine()
         {
+            _canShoot = false;
             OnReload?.Invoke(true);
             yield return _reload.Begin();
             _currentCharge = _data.MaxCharge;
@@ -74,7 +91,7 @@ namespace AllInOne
 
         private void ReloadHandler()
         {
-            if(_currentCharge == _data.MaxCharge)
+            if (_isPrimaryHeld || _currentCharge == _data.MaxCharge)
                 return;
             StartCoroutine(ReloadRoutine());
         }

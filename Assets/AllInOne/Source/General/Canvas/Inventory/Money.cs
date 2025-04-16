@@ -1,8 +1,5 @@
 using UnityEngine;
 using TMPro;
-using AllInOne;
-using UnityEngine.Networking;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 
 namespace AllInOne
 {

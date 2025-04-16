@@ -8,13 +8,20 @@ namespace AllInOne
         public event Action<LocomotionState> OnStateChanged;
         
         [SerializeField] private CharacterController _characterController;
+        [SerializeField] private GunAimer _gunAimer;
         [SerializeField] private float _speed;
+        [SerializeField] private float _aimSpeed;
         [SerializeField] private float _drag;
         [SerializeField] private Vector2 _jumpSpeed;
-        
+
+        private float _currentSpeed;
+
         private StateMachine _stateMachine;
 
+        public float Speed => _currentSpeed;
+
         public string CurrentState => _stateMachine == null ? "[NULL]" : _stateMachine.CurrentState.GetType().Name;
+        public LocomotionState LocomotionState => (LocomotionState)_stateMachine.CurrentState.StateId;
 
         public StateMachine StateMachine => _stateMachine;
         
@@ -42,6 +49,8 @@ namespace AllInOne
 
         private void FixedUpdate()
         {
+            _currentSpeed = Mathf.Lerp(_speed, _aimSpeed, _gunAimer.AimValue);
+
             _stateMachine.Update(Time.fixedDeltaTime);
         }
 

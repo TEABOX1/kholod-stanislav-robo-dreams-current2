@@ -128,6 +128,12 @@ namespace AllInOne
             Gizmos.DrawSphere(_hit.hit ? _hit.position : _point, 0.33f);
         }
 
+        public void KillThemAll()
+        {
+            for (int i = 0; i < _enemies.Count; i++)
+                EnemyPool.Instance.ReturnToPool(_enemies[i]);
+        }
+
         private void EnemyDeathHandler(EnemyController enemy)
         {
             _enemies.Remove(enemy);

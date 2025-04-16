@@ -24,6 +24,9 @@ namespace AllInOne
         private float _aimValue;
         private float _targetAimValue;
 
+
+        public float AimValue => _aimValue;
+        public float TargetAimValue => _targetAimValue;
         public Vector3 AimPoint => _hitPoint;
         public Vector3 CollisionPoint => _collisonPoint;
 
@@ -69,6 +72,15 @@ namespace AllInOne
             _mixingCamera.m_Weight0 = 1f - _aimValue;
             _mixingCamera.m_Weight1 = _aimValue;
             
+        }
+
+        private void LateUpdate()
+        {
+            _aimValue = Mathf.MoveTowards(_aimValue, _targetAimValue, _aimSpeed * Time.deltaTime);
+            _mixingCamera.m_Weight0 = 1f - _aimValue;
+            _mixingCamera.m_Weight1 = _aimValue;
+
+            _gunTransform.position = Vector3.Lerp(_gunRegularAnchor.position, _gunAimAnchor.position, _aimValue);
         }
 
         private void OnDrawGizmos()

@@ -47,7 +47,7 @@ namespace AllInOne
 
         private void Update()
         {
-            if (_scoreSystem.KDA.x >= 4)
+            if (_scoreSystem.KDA.x >= 5)
             {
                 End();
                 return;
@@ -74,8 +74,15 @@ namespace AllInOne
                     ServiceLocator.Instance.GetService<InputController>();
                 inputController.enabled = false;
                 inputController.DisableEscape();
+                KillThemAll();
                 OnComplete?.Invoke(true);
             }
+        }
+
+        private void KillThemAll()
+        {
+            for(int i = 0; i < _hordeSpawners.Length; i++)
+                _hordeSpawners[i].KillThemAll();
         }
 
         private void PlayerDeathHandler()

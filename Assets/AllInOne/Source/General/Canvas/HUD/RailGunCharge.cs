@@ -9,6 +9,7 @@ namespace AllInOne
         [SerializeField] private Vector2 _referenceSize;
         //[SerializeField] private float _damageDecaySpeed;
         [SerializeField] private HitScanGunCooldown _hitScanGun;
+        [SerializeField] private ReloadHUD _hud;
 
 
         private InputController _inputController;
@@ -38,6 +39,8 @@ namespace AllInOne
         
         private void StartFill(bool isHold)
         {
+            if (_hud.enabled)
+                return;
             if (isHold)
             {
                 _canvasGroup.gameObject.SetActive(true);
