@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace AllInOne
@@ -81,8 +82,10 @@ namespace AllInOne
 
         private void KillThemAll()
         {
-            for(int i = 0; i < _hordeSpawners.Length; i++)
+            for (int i = 0; i < _hordeSpawners.Length; i++)
+            {
                 _hordeSpawners[i].KillThemAll();
+            }
         }
 
         private void PlayerDeathHandler()
@@ -90,6 +93,7 @@ namespace AllInOne
             enabled = false;
             ServiceLocator.Instance.GetService<InputController>().DisableEscape();
             OnComplete?.Invoke(false);
+            KillThemAll();
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,56 +5,38 @@ namespace AllInOne
 {
     public class PlayerDeath : MonoBehaviour
     {
-        [SerializeField] private Health _health;
-        [SerializeField] private Transform _bodyTransform;
-        [SerializeField] private Transform _fallMark;
-        [SerializeField] private AnimationCurve _fallCurve;
-        [SerializeField] private GameObject _rootObject;
+        [SerializeField] private Animator _animator;
+        [SerializeField] private string _deathName;
+        [SerializeField] private float _crossFadeTime;
+        [SerializeField] private HandsIK _handsIK;
         [SerializeField] private float _healthBarDelayTime;
+        [SerializeField] private GameObject _logicalPlayer;
 
-        private Vector3 _fallMarkPosition;
-        private Quaternion _fallMarkRotation;
-        private DummyTrack _dummyTrack;
-
-        private float _time;
+        private IHealth _health;
 
         private void Start()
         {
+            _health = ServiceLocator.Instance.GetService<IPlayerService>().Player.GetComponent<IHealth>();
             _health.OnDeath += DeathHandler;
-            
-            _fallMark.GetLocalPositionAndRotation(out _fallMarkPosition, out _fallMarkRotation);
         }
 
         private void DeathHandler()
         {
             StartCoroutine(DelayedDestroy());
         }
-        
+
         private IEnumerator DelayedDestroy()
         {
-            float time = 0f;
-            float reciprocal = 1f / _healthBarDelayTime;
-
-            while (time < _healthBarDelayTime)
-            {
-                EvaluateFall(time * reciprocal);
-                yield return null;
-                time += Time.deltaTime;
-            }
-            
-            EvaluateFall(1f);
-            
-            //Destroy(_rootObject);
-            
             ServiceLocator.Instance.GetService<InputController>().enabled = false;
-        }
-        
-        private void EvaluateFall(float progress)
-        {
-            float curveFactor = _fallCurve.Evaluate(progress);
-            Vector3 position = Vector3.Lerp(Vector3.zero, _fallMarkPosition, curveFactor);
-            Quaternion rotation = Quaternion.Slerp(Quaternion.identity, _fallMarkRotation, curveFactor);
-            _bodyTransform.SetLocalPositionAndRotation(position, rotation);
+            //_logicalPlayer.SetActive(false);
+            yield return null;
+
+            _animator.CrossFadeInFixedTime(_deathName, _crossFadeTime);
+            _handsIK.DisableIK();
+
+            yield return new WaitForSeconds(_healthBarDelayTime);
+
+            ServiceLocator.Instance.GetService<ISaturationService>().SetDeathSaturation();
         }
     }
 }

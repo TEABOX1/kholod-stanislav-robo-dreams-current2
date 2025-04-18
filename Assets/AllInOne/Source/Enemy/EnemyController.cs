@@ -1,4 +1,4 @@
-using AllInOne;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,6 +6,8 @@ namespace AllInOne
 {
     public class EnemyController : MonoBehaviour
     {
+        public event Action<EnemyBehaviour> onBehaviourChanged;
+
         [SerializeField] private HealthIndicator _healthIndicator;
         [SerializeField] private EnemyData _data;
         [SerializeField] private NavMeshAgent _navMeshAgent;
@@ -55,7 +57,7 @@ namespace AllInOne
         {
             _navMeshAgent.updatePosition = false;
             _navMeshAgent.updateRotation = false;
-            _navMeshAgent.avoidancePriority = Random.Range(0, 100);
+            _navMeshAgent.avoidancePriority = UnityEngine.Random.Range(0, 100);
 
             InitStateMachine();
             _behaviourMachine.OnStateChange += StateChangeHandler;
@@ -78,8 +80,6 @@ namespace AllInOne
             _behaviourMachine.AddState((byte)EnemyBehaviour.Search,
                 new SearchBehaviour(_behaviourMachine, (byte)EnemyBehaviour.Search, this));
 
-            /*_behaviourMachine.AddState((byte)EnemyBehaviour.Attack,
-                new AttackBehaviour(_behaviourMachine, (byte)EnemyBehaviour.Attack, this));*/
             _behaviourMachine.AddState((byte)EnemyBehaviour.Shoot,
                 new ShootBehaviour(_behaviourMachine, (byte)EnemyBehaviour.Shoot, this));
             _behaviourMachine.AddState((byte)EnemyBehaviour.Attack,
@@ -121,6 +121,7 @@ namespace AllInOne
         private void StateChangeHandler(byte stateId)
         {
             _currentBehaviour = (EnemyBehaviour)stateId;
+            onBehaviourChanged?.Invoke(_currentBehaviour);
         }
 
         public void Initialize(INavPointProvider navPointProvider, Camera camera)

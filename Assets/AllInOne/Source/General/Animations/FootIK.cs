@@ -16,7 +16,7 @@ namespace AllInOne
             currentPosition = Vector3.MoveTowards(currentPosition, controllerPosition, _locomotionController.Speed * 1.5f * Time.fixedDeltaTime);
             currentRotation = controllerRotation;
             
-            _animatedCharacter.SetPositionAndRotation(currentPosition, currentRotation);
+            //_animatedCharacter.SetPositionAndRotation(currentPosition, currentRotation);
         }
     }
 }

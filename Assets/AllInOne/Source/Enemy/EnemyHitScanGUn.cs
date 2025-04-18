@@ -30,33 +30,33 @@ namespace AllInOne
         public virtual void Hit(Collider enemy)
         {
             OnMeeleHit?.Invoke(enemy);
-            StartCoroutine(AttackAnimation());
+            //StartCoroutine(AttackAnimation());
         }
 
-        private IEnumerator AttackAnimation()
-        {
-            Quaternion startRotation = transform.localRotation;
-            Quaternion attackRotation = startRotation * Quaternion.Euler(-90, 0, 0);
-            float attackSpeed = 5f;
-            float t = 0f;
+        //private IEnumerator AttackAnimation()
+        //{
+            //Quaternion startRotation = transform.localRotation;
+            //Quaternion attackRotation = startRotation * Quaternion.Euler(-90, 0, 0);
+            //float attackSpeed = 5f;
+            //float t = 0f;
 
-            while (t < 1f)
-            {
-                t += Time.deltaTime * attackSpeed;
-                transform.localRotation = Quaternion.Lerp(startRotation, attackRotation, t);
-                yield return null;
-            }
+            //while (t < 1f)
+            //{
+            //    t += Time.deltaTime * attackSpeed;
+            //    transform.localRotation = Quaternion.Lerp(startRotation, attackRotation, t);
+            //    yield return null;
+            //}
 
-            yield return new WaitForSeconds(0.1f);
+            //yield return new WaitForSeconds(0.1f);
 
-            t = 0f;
-            while (t < 1f)
-            {
-                t += Time.deltaTime * attackSpeed;
-                transform.localRotation = Quaternion.Lerp(attackRotation, startRotation, t);
-                yield return null;
-            }
-        }
+            //t = 0f;
+            //while (t < 1f)
+            //{
+            //    t += Time.deltaTime * attackSpeed;
+            //    transform.localRotation = Quaternion.Lerp(attackRotation, startRotation, t);
+            //    yield return null;
+            //}
+        //}
 
         public virtual void Shoot()
         {

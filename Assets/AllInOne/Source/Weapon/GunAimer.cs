@@ -80,7 +80,7 @@ namespace AllInOne
             _mixingCamera.m_Weight0 = 1f - _aimValue;
             _mixingCamera.m_Weight1 = _aimValue;
 
-            _gunTransform.position = Vector3.Lerp(_gunRegularAnchor.position, _gunAimAnchor.position, _aimValue);
+            //_gunTransform.position = Vector3.Lerp(_gunRegularAnchor.position, _gunAimAnchor.position, _aimValue);
         }
 
         private void OnDrawGizmos()
