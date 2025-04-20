@@ -2714,7 +2714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d016bb810b12ed34fbb602723f23275c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shotPrefab: {fileID: 9065768863821647926, guid: 7956da0a8f5287f4f818eb660c229089, type: 3}
+  _shotPrefab: {fileID: 0}
   _muzzleTransform: {fileID: 0}
   _decaySpeed: 75
   _shotScale: {x: 1, y: 1, z: 1}
@@ -12492,7 +12492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _aimer: {fileID: 3463496243732284817}
-  _shotPrefab: {fileID: 9065768863821647926, guid: 7956da0a8f5287f4f818eb660c229089, type: 3}
+  _shotPrefab: {fileID: 5006833997141748508, guid: 94c000855553ec645b2de92cac301b77, type: 3}
   _muzzleTransform: {fileID: 6969212447717917790}
   _decaySpeed: 75
   _shotScale: {x: 1, y: 1, z: 1}
@@ -18075,7 +18075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d016bb810b12ed34fbb602723f23275c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shotPrefab: {fileID: 9065768863821647926, guid: 7956da0a8f5287f4f818eb660c229089, type: 3}
+  _shotPrefab: {fileID: 0}
   _muzzleTransform: {fileID: 0}
   _decaySpeed: 75
   _shotScale: {x: 1, y: 1, z: 1}

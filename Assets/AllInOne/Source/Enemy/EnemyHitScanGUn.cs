@@ -10,7 +10,7 @@ namespace AllInOne
         public event Action<Collider> OnMeeleHit;
         public event Action OnShot;
 
-        [SerializeField] protected HitscanShotAspect _shotPrefab;
+        [SerializeField] protected ParticleSystem _shotPrefab;
         [SerializeField] protected Transform _muzzleTransform;
         [SerializeField] protected float _decaySpeed;
         [SerializeField] protected Vector3 _shotScale;
@@ -21,6 +21,8 @@ namespace AllInOne
         [SerializeField] protected LayerMask _layerMask;
 
         protected int _tilingId;
+
+        private float _distanceToTarget;
 
         protected virtual void Start()
         {
@@ -74,35 +76,36 @@ namespace AllInOne
                 OnHit?.Invoke(hitInfo.collider);
             }
 
-             HitscanShotAspect shot = Instantiate(_shotPrefab, hitPoint, _muzzleTransform.rotation);
-             shot.distance = (hitPoint - _muzzleTransform.position).magnitude;
-             shot.outerPropertyBlock = new MaterialPropertyBlock();
-             StartCoroutine(ShotRoutine(shot));
-             OnShot?.Invoke();
+            ParticleSystem shot = Instantiate(_shotPrefab, _muzzleTransform.position, Quaternion.LookRotation(hitPoint - _muzzleTransform.position));
+            if (shot != null)
+                shot.Play();
+            _distanceToTarget = (hitPoint - _muzzleTransform.position).magnitude;
+            //shot.distance = (hitPoint - _muzzleTransform.position).magnitude;
+            //shot.outerPropertyBlock = new MaterialPropertyBlock();
+            StartCoroutine(ShotRoutine(shot, hitPoint));
+            OnShot?.Invoke();
             
         }
 
-        protected IEnumerator ShotRoutine(HitscanShotAspect shot)
+        protected IEnumerator ShotRoutine(ParticleSystem shot, Vector3 targetPosition)
         {
             float interval = _decaySpeed * Time.deltaTime;
-            while (shot.distance >= interval)
+            while (_distanceToTarget >= interval)
             {
-                EvaluateShot(shot);
+                EvaluateShot(shot, targetPosition);
                 yield return null;
-                shot.distance -= interval;
+                _distanceToTarget -= interval;
                 interval = _decaySpeed * Time.deltaTime;
             }
 
             Destroy(shot.gameObject);
         }
 
-        protected void EvaluateShot(HitscanShotAspect shot)
+        protected void EvaluateShot(ParticleSystem shot, Vector3 targetPosition)
         {
-            shot.Transform.localScale = new Vector3(_shotScale.x, _shotScale.y, shot.distance * 0.5f);
-            Vector4 tiling = Vector4.one;
-            tiling.y = shot.distance * 0.5f / _shotVisualDiameter;
-            shot.outerPropertyBlock.SetVector(_tilingId, tiling);
-            shot.Outer.SetPropertyBlock(shot.outerPropertyBlock);
+            Vector3 direction = (targetPosition - shot.transform.position).normalized;
+            shot.transform.position += direction * _decaySpeed * Time.deltaTime;
+            //shot.Outer.SetPropertyBlock(shot.outerPropertyBlock);
         }
     }
 }
