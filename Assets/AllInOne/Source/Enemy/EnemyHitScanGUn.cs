@@ -8,6 +8,7 @@ namespace AllInOne
     {
         public event Action<Collider> OnHit;
         public event Action<Collider> OnMeeleHit;
+        public event Action<RaycastHit> OnHitPrecise;
         public event Action OnShot;
 
         [SerializeField] protected ParticleSystem _shotPrefab;
@@ -37,28 +38,33 @@ namespace AllInOne
 
         //private IEnumerator AttackAnimation()
         //{
-            //Quaternion startRotation = transform.localRotation;
-            //Quaternion attackRotation = startRotation * Quaternion.Euler(-90, 0, 0);
-            //float attackSpeed = 5f;
-            //float t = 0f;
+        //Quaternion startRotation = transform.localRotation;
+        //Quaternion attackRotation = startRotation * Quaternion.Euler(-90, 0, 0);
+        //float attackSpeed = 5f;
+        //float t = 0f;
 
-            //while (t < 1f)
-            //{
-            //    t += Time.deltaTime * attackSpeed;
-            //    transform.localRotation = Quaternion.Lerp(startRotation, attackRotation, t);
-            //    yield return null;
-            //}
-
-            //yield return new WaitForSeconds(0.1f);
-
-            //t = 0f;
-            //while (t < 1f)
-            //{
-            //    t += Time.deltaTime * attackSpeed;
-            //    transform.localRotation = Quaternion.Lerp(attackRotation, startRotation, t);
-            //    yield return null;
-            //}
+        //while (t < 1f)
+        //{
+        //    t += Time.deltaTime * attackSpeed;
+        //    transform.localRotation = Quaternion.Lerp(startRotation, attackRotation, t);
+        //    yield return null;
         //}
+
+        //yield return new WaitForSeconds(0.1f);
+
+        //t = 0f;
+        //while (t < 1f)
+        //{
+        //    t += Time.deltaTime * attackSpeed;
+        //    transform.localRotation = Quaternion.Lerp(attackRotation, startRotation, t);
+        //    yield return null;
+        //}
+        //}
+
+        protected void InvokeHitPrecise(RaycastHit hit)
+        {
+            OnHitPrecise?.Invoke(hit);
+        }
 
         public virtual void Shoot()
         {
@@ -74,6 +80,7 @@ namespace AllInOne
                 hitPoint = muzzlePosition + rayVector;
 
                 OnHit?.Invoke(hitInfo.collider);
+                InvokeHitPrecise(hitInfo);
             }
 
             ParticleSystem shot = Instantiate(_shotPrefab, _muzzleTransform.position, Quaternion.LookRotation(hitPoint - _muzzleTransform.position));

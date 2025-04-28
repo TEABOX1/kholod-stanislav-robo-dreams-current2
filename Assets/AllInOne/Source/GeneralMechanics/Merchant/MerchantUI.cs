@@ -37,6 +37,10 @@ namespace AllInOne
             _buyList.Open(_merchantInteractable.TradeTable.BuyTable, _merchantInteractable.Inventory, _inventoryService.Inventory);
             _sellList.Open(_merchantInteractable.TradeTable.SellTable, _inventoryService.Inventory, _merchantInteractable.Inventory);
 
+            InputController inputController = ServiceLocator.Instance.GetService<InputController>();
+            if (inputController != null)
+                inputController.enabled = !_canvas.enabled;
+
             UpdateMoney();
         }
 
@@ -55,6 +59,9 @@ namespace AllInOne
 
         public void Hide()
         {
+            InputController inputController = ServiceLocator.Instance.GetService<InputController>();
+            if (inputController != null)
+                inputController.enabled = !_canvas.enabled;
             _canvas.enabled = false;
         }
     }

@@ -9,6 +9,7 @@ namespace AllInOne
     public class HitScanGun : MonoBehaviour
     {
         public event Action<Collider, float> OnHit;
+        public event Action<RaycastHit> OnHitPrecise;
         public event Action OnShot;
         
         [SerializeField] protected GunAimer _aimer;
@@ -32,6 +33,11 @@ namespace AllInOne
         private float _distanceToTarget;
 
         public float HoldTime => _time;
+
+        protected void InvokeHitPrecise(RaycastHit hit)
+        {
+            OnHitPrecise?.Invoke(hit);
+        }
 
         protected virtual void Start()
         {
@@ -73,6 +79,7 @@ namespace AllInOne
                 hitPoint = muzzlePosition + rayVector;
                 
                 OnHit?.Invoke(hitInfo.collider, _time);
+                InvokeHitPrecise(hitInfo);
             }
 
             ParticleSystem shot = Instantiate(_shotPrefab, _muzzleTransform.position, Quaternion.LookRotation(hitPoint - _muzzleTransform.position));

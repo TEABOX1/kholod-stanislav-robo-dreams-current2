@@ -12,7 +12,7 @@ namespace AllInOne
 
         [SerializeField] private Transform _transform;
         [SerializeField] private InputAction _interactAction;
-        [SerializeField] private float _lockDuration;
+        //[SerializeField] private float _lockDuration;
         [SerializeField] private Money _money;
 
         private YieldInstruction _lockDelay;
@@ -31,7 +31,7 @@ namespace AllInOne
             _interactAction.performed += InteractHandler;
             _interactableService = ServiceLocator.Instance.GetService<IInteractableService>();
 
-            _lockDelay = new WaitForSeconds(_lockDuration);
+            //_lockDelay = new WaitForSeconds(_lockDuration);
         }
 
         private void OnDestroy()

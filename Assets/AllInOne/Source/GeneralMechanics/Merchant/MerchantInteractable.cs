@@ -9,7 +9,7 @@ namespace AllInOne
         public override InteractableType Type => InteractableType.Activate;
 
         [SerializeField] private TradeTable _tradeTable;
-        [SerializeField] private InventoryService.ItemData[] _startingItems;
+        [SerializeField] private ItemSaveData[] _startingItems;
         [SerializeField] private MerchantUI _merchantUI;
         
         private Inventory _inventory;
@@ -31,7 +31,7 @@ namespace AllInOne
             
             for (int i = 0; i < _startingItems.Length; ++i)
             {
-                InventoryService.ItemData itemData = _startingItems[i];
+                ItemSaveData itemData = _startingItems[i];
                 _inventory.Add(itemData.id, itemData.count);
             }
             
@@ -44,8 +44,13 @@ namespace AllInOne
             if (_active)
             {
                 _merchantUI.Show();
-                _inputController.enabled = false;
                 _inputController.OnEscape += EscapeHandler;
+
+                _inputController.EnableGameplayInput(false);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+
+                Debug.Log("Gameplay Input Disabled, Cursor Enabled");
             }
             else
             {
@@ -74,7 +79,12 @@ namespace AllInOne
             _inputController.OnEscape -= EscapeHandler;
             _merchantUI.Hide();
             Highlight(true);
-            _inputController.enabled = true;
+
+            _inputController.EnableGameplayInput(true);
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            Debug.Log("Gameplay Input Enabled, Cursor Locked");
         }
     }
 }

@@ -51,7 +51,7 @@ namespace AllInOne
 
         private IEnumerator LockRoutine()
         {
-            _inputController.Lock();
+            //_inputController.Lock();
             if (_locomotionController.LocomotionState != LocomotionState.Idle)
             {
                 _locomotionController.OnStateChanged += LocomotionStateHandler;
@@ -62,7 +62,7 @@ namespace AllInOne
             }
             
             yield return _lockDelay;
-            _inputController.Unlock();
+            //_inputController.Unlock();
             _handsIK.EnableIK();
             _animator.CrossFadeInFixedTime(_idleId, _crossFadeTime);
         }

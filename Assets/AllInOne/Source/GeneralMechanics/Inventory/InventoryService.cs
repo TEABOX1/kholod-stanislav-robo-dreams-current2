@@ -6,21 +6,15 @@ namespace AllInOne
 {
     public class InventoryService : MonoServiceBase, IInventoryService
     {
-        [Serializable]
-        public struct ItemData
-        {
-            [ItemId] public string id;
-            public int count;
-        }
-        
         [SerializeField] private ItemLibrary _itemLibrary;
 
-        [SerializeField] private ItemData[] _startingItems;
+        [SerializeField] private ItemSaveData[] _startingItems;
         [SerializeField] private InventoryView _inventoryView;
         
         private Inventory _inventory;
 
         private bool _inventoryOpened;
+        private ISaveService _saveService;
 
         private bool InventoryOpened
         {
@@ -37,10 +31,7 @@ namespace AllInOne
                 {
                     _inventoryView.Hide();
                 }
-                
-                InputController inputController = ServiceLocator.Instance.GetService<InputController>();
-                if (inputController != null)
-                    inputController.enabled = !_inventoryOpened;
+               
             }
         }
         
@@ -59,13 +50,32 @@ namespace AllInOne
         private void Start()
         {
             _inventory = new();
-            for (int i = 0; i < _startingItems.Length; ++i)
+            _saveService = ServiceLocator.Instance.GetService<ISaveService>();
+
+            if (_saveService.SaveData.items != null && _saveService.SaveData.items.Length > 0)
             {
-                ItemData itemData = _startingItems[i];
-                _inventory.Add(itemData.id, itemData.count);
+                _startingItems = _saveService.SaveData.items;
             }
-            
+
+            if (_startingItems != null)
+            {
+                for (int i = 0; i < _startingItems.Length; ++i)
+                {
+                    ItemSaveData itemData = _startingItems[i];
+                    _inventory.Add(itemData.id, itemData.count);
+                }
+            }
+
             HideInventory();
+        }
+
+        protected override void OnDestroy()
+        {
+            _saveService.SaveData.items = _inventory.GetAllItemsForSave();
+
+            _saveService.SaveAll();
+
+            base.OnDestroy();
         }
 
         public void ShowInventory()

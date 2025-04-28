@@ -77,6 +77,7 @@ namespace AllInOne
                 inputController.DisableEscape();
                 KillThemAll();
                 OnComplete?.Invoke(true);
+                Destroy(this);
             }
         }
 
@@ -85,6 +86,7 @@ namespace AllInOne
             for (int i = 0; i < _hordeSpawners.Length; i++)
             {
                 _hordeSpawners[i].KillThemAll();
+                Destroy(_hordeSpawners[i]);
             }
         }
 
@@ -94,6 +96,7 @@ namespace AllInOne
             ServiceLocator.Instance.GetService<InputController>().DisableEscape();
             OnComplete?.Invoke(false);
             KillThemAll();
+            Destroy(this);
         }
     }
 }

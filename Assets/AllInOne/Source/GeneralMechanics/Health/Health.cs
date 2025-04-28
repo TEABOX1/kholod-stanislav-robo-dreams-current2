@@ -8,6 +8,7 @@ namespace AllInOne
         public event Action<int> OnHealthChanged;
         public event Action<float> OnHealthChanged01;
         public event Action OnDeath;
+        public event Action<int> OnTakeDamage;
 
         [SerializeField] protected CharacterController _characterController;
         [SerializeField] protected int _maxHealth;
@@ -58,6 +59,8 @@ namespace AllInOne
             HealthValue = Mathf.Clamp(HealthValue - damage, 0, _maxHealth);
             if (HealthValue <= 0)
                 IsAlive = false;
+
+            OnTakeDamage?.Invoke(damage);
         }
 
         public void Heal(int heal)

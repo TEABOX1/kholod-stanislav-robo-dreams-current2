@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b6287b54bc95f44a7224e9d0f7313d, type: 3}
+  m_Name: FootstepSoundLibrary
+  m_EditorClassIdentifier: 
+  _defaultFootstepSound: {fileID: 8300000, guid: 7660e29bd284b2c4d82702301a847217, type: 3}
+  _terrainMaterial: {fileID: 13400000, guid: 4374601eb150bc64abb6a50a81b1a569, type: 2}
+  _terrainSounds:
+  - clips:
+    - {fileID: 8300000, guid: 43ba213a2d6ae1441ab335099447436d, type: 3}
+    - {fileID: 8300000, guid: aaf5b971b50dadf47979adb8a04811df, type: 3}
+    - {fileID: 8300000, guid: 9c4daae6e94c5d548a1aa10bccd7dfa3, type: 3}
+    - {fileID: 8300000, guid: 1ffdeed03ec1ff74fba3d02a07692139, type: 3}
+    - {fileID: 8300000, guid: fa26a4f489df3f745a70600eb0de6c00, type: 3}
+    - {fileID: 8300000, guid: 38a5d7bbaae4ae147bb4c94dcba3734f, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: 8ab9145b8b6aa3e45a30383cec1569bd, type: 3}
+    - {fileID: 8300000, guid: a1b7cead5a463c640bc36c927bde5e77, type: 3}
+    - {fileID: 8300000, guid: e3dbfe80a36c8b34bbb4371a7ee2859b, type: 3}
+    - {fileID: 8300000, guid: 3270643223a3475458baef9d49008ae8, type: 3}
+    - {fileID: 8300000, guid: ea0f78fdd25264247b0fff7a529a9750, type: 3}
+    - {fileID: 8300000, guid: 7c34b1c024a79864eb1304463fbde042, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: eac49cb993822d64683f0450bb0458aa, type: 3}
+    - {fileID: 8300000, guid: 530dc8bcbb450c34e8771d64588f49cd, type: 3}
+    - {fileID: 8300000, guid: 71723118a411950488b8a79c479c4d26, type: 3}
+    - {fileID: 8300000, guid: 724f1f53cbef7914b9c9f5a578874be9, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: c6f20eb0b788c8e45984d34a7d8f259f, type: 3}
+    - {fileID: 8300000, guid: 2fe304d515aca9745945addf266961c1, type: 3}
+    - {fileID: 8300000, guid: 5a38367d14afc93498686872bea93f33, type: 3}
+    - {fileID: 8300000, guid: aebd980cac9c490448914cfb643e30cd, type: 3}
+    - {fileID: 8300000, guid: 4af3662867d8e4844b702de04fd88cb9, type: 3}
+    - {fileID: 8300000, guid: 3819480b05cd0044bb75a1f487a80348, type: 3}
+  _footstepData: []

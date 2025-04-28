@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AllInOne
@@ -9,6 +10,7 @@ namespace AllInOne
         private Dictionary<IItem, List<ItemEntry>> _items = new();
         
         private readonly IInventoryService _inventoryService;
+        private ISaveService _saveService;
 
         public int Count => _entries.Count;
         
@@ -17,6 +19,7 @@ namespace AllInOne
         public Inventory()
         {
             _inventoryService = ServiceLocator.Instance.GetService<IInventoryService>();
+            _saveService = ServiceLocator.Instance.GetService<ISaveService>();
         }
 
         public void Add(string itemId, int amount)
@@ -117,7 +120,7 @@ namespace AllInOne
             
             for (int i = 0; i < _entries.Count; ++i)
                 _entries[i].SetListPosition(i);
-            
+
             return true;
         }
        
@@ -137,5 +140,26 @@ namespace AllInOne
         {
             return _items.TryGetValue(item, out entry);
         }
+
+        public ItemSaveData[] GetAllItemsForSave()
+        {
+            List<ItemSaveData> saveDataList = new List<ItemSaveData>();
+
+            for (int i = 0; i < _entries.Count; i++)
+            {
+                ItemEntry entry = _entries[i];
+
+                ItemSaveData data = new ItemSaveData
+                {
+                    id = entry.Item.Id,
+                    count = entry.Count
+                };
+
+                saveDataList.Add(data);
+            }
+
+            return saveDataList.ToArray();
+        }
+
     }
 }

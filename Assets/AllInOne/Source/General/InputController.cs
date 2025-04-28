@@ -269,5 +269,37 @@ namespace AllInOne
         {
             _actionMap.Enable();
         }
+
+        public void EnableGameplayInput(bool enabled)
+        {
+            if (enabled)
+            {
+                _actionMap.Enable();
+                _moveAction.Enable();
+                _lookAroundAction.Enable();
+                _primaryFireAction.Enable();
+                _secondaryFireAction.Enable();
+                _grenadeAction.Enable();
+                _scoreAction.Enable();
+                _reloadAction.Enable();
+                _jumpAction.Enable();
+                _interactAction.Enable();
+                _healAction.Enable();
+            }
+            else
+            {
+                _actionMap.Disable();
+                _moveAction.Disable();
+                _lookAroundAction.Disable();
+                _primaryFireAction.Disable();
+                _secondaryFireAction.Disable();
+                _grenadeAction.Disable();
+                _scoreAction.Disable();
+                _reloadAction.Disable();
+                _jumpAction.Disable();
+                _interactAction.Disable();
+                _healAction.Disable();
+            }
+        }
     }
 }
